@@ -13,15 +13,8 @@ class BoardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board)
-        setSupportActionBar(toolbar)
 
-        button.setOnClickListener{
-            // 画面作成
-            val intent = Intent(this, MainActivity::class.java)
-            // 画面遷移
-            startActivity(intent)
-        }
-
+        // メモ作成ボタン
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
