@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Memoboard</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_board">BoardActivity</string>
+    <string name="title_activity_board">Board Page</string>
 </resources>
