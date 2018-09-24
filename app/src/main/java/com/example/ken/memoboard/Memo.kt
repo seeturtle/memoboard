@@ -6,7 +6,7 @@ import io.realm.annotations.PrimaryKey
 import io.realm.annotations.Required
 import java.util.*
 
-open class Memo : RealmObject(){
+open class Memo : RealmObject() {
     @PrimaryKey
     var id: Long = 0 // id
     @Required

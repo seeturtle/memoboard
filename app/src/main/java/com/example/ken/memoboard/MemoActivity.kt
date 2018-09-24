@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import io.realm.Realm
+import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_memo.*
 
 
@@ -23,7 +24,7 @@ class MemoActivity : AppCompatActivity() {
         val memoId = intent.getIntExtra("memoId", 1)
 
         // Realmからメモ情報取得
-        val memo = mRealm.where(Memo::class.java).equalTo("id", memoId).findFirst()
+        val memo = mRealm.where<Memo>().equalTo("id", memoId).findFirst()
 
         // テキストフィールドに表示
         editMemo.setText(memo?.text, TextView.BufferType.NORMAL)
@@ -33,6 +34,7 @@ class MemoActivity : AppCompatActivity() {
             // save処理
             mRealm.executeTransaction {
                 memo?.text = editMemo.text.toString()
+                println(memo.toString())
             }
 
             val intent = Intent(this, BoardActivity::class.java)
