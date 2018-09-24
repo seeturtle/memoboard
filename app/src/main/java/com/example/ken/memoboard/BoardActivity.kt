@@ -17,13 +17,16 @@ class BoardActivity : AppCompatActivity() {
 
     private val WC = ViewGroup.LayoutParams.WRAP_CONTENT
     private val random = Random()
+    private val memoList = ArrayList<TextView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_board)
 
         val wm = getSystemService(WINDOW_SERVICE) as WindowManager
         val dp = wm.defaultDisplay
+
 
         // メモ作成ボタン
         fab.setOnClickListener { view ->
@@ -32,23 +35,25 @@ class BoardActivity : AppCompatActivity() {
 
             // メモtextView作成
             val memo = TextView(this)
-            memo.text = "これはメモのテストです．アイウエオかきくけこ"
-            memo.textSize = 20f
+            memo.text = "新規メモ"
+            memo.textSize = 30f
             memo.setBackgroundColor(Color.GRAY)
             memo.setPadding(20, 20, 20, 20)
             memo.width = 500
 
             // タッチイベント時の挙動
-            val listener = MemoListener(memo)
+            val listener = MemoListener(memo, this)
             memo.setOnTouchListener(listener)
 
             // マージン設定
             val left = random.nextInt(dp.width - 500)
-            val top = random.nextInt(dp.height - 700)
+            val top = random.nextInt(dp.height - 300)
             val param = RelativeLayout.LayoutParams(WC, WC)
             param.setMargins(left, top, 0, 0)
 
             // View追加
+            memoList.add(memo)
+            println(memoList.size)
             addContentView(memo, param)
 
         }
