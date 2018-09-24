@@ -71,12 +71,7 @@ class BoardActivity : AppCompatActivity() {
         val listener = MemoListener(memoView, this)
         memoView.setOnTouchListener(listener)
 
-        // layout param
-        val param = RelativeLayout.LayoutParams(wc, wc)
-        param.setMargins(left, top, 0, 0)
 
-        // メモを画面に追加
-        addContentView(memoView, param)
 
         // Realm保存
         mRealm.executeTransaction {
@@ -88,8 +83,11 @@ class BoardActivity : AppCompatActivity() {
                 newId = max.toLong() + 1
             }
 
+            // memoViewにもID設定
+            memoView.id = newId.toInt()
+
             // メモモデル作成
-            val memo: Memo = mRealm.createObject<Memo>(primaryKeyValue = newId)
+            val memo: Memo = mRealm.createObject(primaryKeyValue = newId)
 
             // データ挿入
             memo.name = name
@@ -99,9 +97,17 @@ class BoardActivity : AppCompatActivity() {
             memo.left = left
             memo.top = top
 
+            // テスト用出力
             println(memo.toString())
 
         }
+
+        // layout param
+        val param = RelativeLayout.LayoutParams(wc, wc)
+        param.setMargins(left, top, 0, 0)
+
+        // メモを画面に追加
+        addContentView(memoView, param)
 
     }
 
