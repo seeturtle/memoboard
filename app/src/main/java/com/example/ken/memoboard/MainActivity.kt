@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                             }
 
                             //新規Board作成　IDを入れる。
-                            val board : Board = mRealm.createObject<Board>(primaryKeyValue = newId)
+                            val board: Board = mRealm.createObject<Board>(primaryKeyValue = newId)
 
                             // データ挿入
                             board.name = editView.text.toString()

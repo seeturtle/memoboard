@@ -123,8 +123,6 @@ class BoardActivity : AppCompatActivity() {
         val listener = MemoListener(memoView, this)
         memoView.setOnTouchListener(listener)
 
-
-
         // Realm保存
         mRealm.executeTransaction {
 

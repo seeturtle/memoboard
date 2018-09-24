@@ -60,13 +60,14 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
 
             // 画面作成
             val intent = Intent(boardActivity, MemoActivity::class.java)
-            val message = dragView.text.toString()
-            intent.putExtra("memo", message)
+            val memoId = dragView.id
+            intent.putExtra("memoId", memoId)
             // 画面遷移
             boardActivity.startActivity(intent)
 
             return true
         }
     }
+
 
 }
