@@ -1,17 +1,20 @@
 package com.example.ken.memoboard.listener
 
-import android.graphics.Color
+import android.content.Intent
+import android.support.v4.content.ContextCompat.startActivity
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.widget.TextView
+import com.example.ken.memoboard.BoardActivity
+import com.example.ken.memoboard.MemoActivity
 
 
 /**
  * メモ用タッチイベントListener
  */
-class MemoListener(private val dragView: TextView) : OnTouchListener {
+class MemoListener(private val dragView: TextView, private val boardActivity: BoardActivity) : OnTouchListener {
 
     // ドラッグ中に移動量を取得するための変数
     private var oldX: Int = 0
@@ -55,8 +58,12 @@ class MemoListener(private val dragView: TextView) : OnTouchListener {
         // ダブルタップ時のイベント
         override fun onDoubleTap(e: MotionEvent): Boolean {
 
-            dragView.setBackgroundColor(Color.GREEN)
-            println("Memo is Double Tapped")
+            // 画面作成
+            val intent = Intent(boardActivity, MemoActivity::class.java)
+            val message = dragView.text.toString()
+            intent.putExtra("memo", message)
+            // 画面遷移
+            startActivity(dragView.context, intent, null)
 
             return true
         }

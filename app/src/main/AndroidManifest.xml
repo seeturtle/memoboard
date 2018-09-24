@@ -24,5 +24,10 @@
             android:name=".BoardActivity"
             android:label="@string/title_activity_board"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".MemoActivity"
+            android:label="@string/title_activity_memo"
+            android:parentActivityName=".BoardActivity" />
     </application>
+
 </manifest>
