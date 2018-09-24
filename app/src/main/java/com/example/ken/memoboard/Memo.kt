@@ -9,6 +9,7 @@ import java.util.*
 open class Memo : RealmObject() {
     @PrimaryKey
     var id: Long = 0 // id
+    var boardId : Long = 0 //BoardId
     @Required
     var name: String = ""  // メモの名前
     var text: String = ""  // メモの内容

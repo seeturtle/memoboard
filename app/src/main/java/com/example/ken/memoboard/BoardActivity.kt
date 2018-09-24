@@ -120,7 +120,7 @@ class BoardActivity : AppCompatActivity() {
         memoView.width = width
 
         // タッチイベント時の挙動
-        val listener = MemoListener(memoView, this)
+        val listener = MemoListener(memoView,this)
         memoView.setOnTouchListener(listener)
 
         // Realm保存
@@ -145,6 +145,7 @@ class BoardActivity : AppCompatActivity() {
 
 
             // データ挿入
+            memo.boardId = boardId
             memo.name = name
             memo.text = text
             memo.color = color

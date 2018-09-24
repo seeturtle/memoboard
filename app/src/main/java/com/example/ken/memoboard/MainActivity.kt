@@ -18,6 +18,8 @@ import kotlinx.android.synthetic.main.content_main.*
 import java.util.*
 
 
+
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mRealm: Realm
@@ -28,8 +30,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-
-//        Realm.deleteRealm(config)
+//
+//        val realmConfig = RealmConfiguration.Builder().build()
+//        Realm.deleteRealm(realmConfig)
         //データベースのオープン処理
         mRealm = Realm.getDefaultInstance()
 
