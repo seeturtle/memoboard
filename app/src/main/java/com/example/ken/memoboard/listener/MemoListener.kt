@@ -6,8 +6,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.widget.TextView
-import com.example.ken.memoboard.BoardActivity
-import com.example.ken.memoboard.MemoActivity
+import com.example.ken.memoboard.activity.BoardActivity
+import com.example.ken.memoboard.activity.MemoActivity
 
 
 /**
