@@ -1,4 +1,4 @@
-package com.example.ken.memoboard
+package com.example.ken.memoboard.activity
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,6 +9,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
+import com.example.ken.memoboard.model.Board
+import com.example.ken.memoboard.BoardAdapter
+import com.example.ken.memoboard.R
 import io.realm.Realm
 import io.realm.Sort
 import io.realm.kotlin.createObject
@@ -16,8 +19,6 @@ import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.util.*
-
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,14 +38,12 @@ class MainActivity : AppCompatActivity() {
         mRealm = Realm.getDefaultInstance()
 
 
-
-
         //adapter とListViewを連携させる。
         val boards = mRealm.where(Board::class.java).findAll().sort("id", Sort.ASCENDING)
         listView.adapter = BoardAdapter(boards)
 
         this.listView.setOnItemClickListener { parent, view, position, id ->
-//            val board = parent.getItemAtPosition(position) as Board
+            //            val board = parent.getItemAtPosition(position) as Board
 //            this.startActivity<BoardActivity>("id" to board.id)
 
             val adapter = listView.getAdapter() as BoardAdapter
@@ -64,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         createButton.setOnClickListener {
-            //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
             //テキスト入力を受け付けるビューを作成。
             val editView = EditText(this@MainActivity)

@@ -1,4 +1,4 @@
-package com.example.ken.memoboard
+package com.example.ken.memoboard.model
 
 import android.graphics.Color
 import io.realm.RealmObject
