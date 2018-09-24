@@ -1,6 +1,5 @@
 package com.example.ken.memoboard
 
-import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -11,7 +10,6 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.example.ken.memoboard.listener.MemoListener
 import kotlinx.android.synthetic.main.activity_board.*
-import org.w3c.dom.Text
 import java.util.*
 
 
@@ -29,6 +27,7 @@ class BoardActivity : AppCompatActivity() {
         val wm = getSystemService(WINDOW_SERVICE) as WindowManager
         val dp = wm.defaultDisplay
 
+
         // メモ作成ボタン
         fab.setOnClickListener { view ->
             Snackbar.make(view, "New Memo", Snackbar.LENGTH_LONG)
@@ -36,8 +35,8 @@ class BoardActivity : AppCompatActivity() {
 
             // メモtextView作成
             val memo = TextView(this)
-            memo.text = "これはメモのテストです．アイウエオかきくけこ"
-            memo.textSize = 20f
+            memo.text = "新規メモ"
+            memo.textSize = 30f
             memo.setBackgroundColor(Color.GRAY)
             memo.setPadding(20, 20, 20, 20)
             memo.width = 500
@@ -48,15 +47,13 @@ class BoardActivity : AppCompatActivity() {
 
             // マージン設定
             val left = random.nextInt(dp.width - 500)
-            val top = random.nextInt(dp.height - 700)
+            val top = random.nextInt(dp.height - 300)
             val param = RelativeLayout.LayoutParams(WC, WC)
             param.setMargins(left, top, 0, 0)
 
             // View追加
             memoList.add(memo)
-
             println(memoList.size)
-
             addContentView(memo, param)
 
         }

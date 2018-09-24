@@ -1,7 +1,6 @@
 package com.example.ken.memoboard.listener
 
 import android.content.Intent
-import android.support.v4.content.ContextCompat.startActivity
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
@@ -37,6 +36,7 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
 
             MotionEvent.ACTION_MOVE -> {
                 // 今回イベントでのView移動先の位置
+
                 val left = dragView.left + (x - oldX)
                 val top = dragView.top + (y - oldY)
                 // Viewを移動する
@@ -63,7 +63,7 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
             val message = dragView.text.toString()
             intent.putExtra("memo", message)
             // 画面遷移
-            startActivity(dragView.context, intent, null)
+            boardActivity.startActivity(intent)
 
             return true
         }
