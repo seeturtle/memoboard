@@ -1,5 +1,6 @@
 package com.example.ken.memoboard
 
+import android.graphics.Color
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.Required
@@ -11,7 +12,8 @@ open class Memo : RealmObject(){
     @Required
     var name: String = ""  // メモの名前
     var text: String = ""  // メモの内容
+    var color: Int = Color.LTGRAY
     var date: Date = Date() // 日付
-    var x: Int = 0 // メモのx座標
-    var y: Int = 0 // メモのy座標
+    var left: Int = 0 // メモのleftマージン
+    var top: Int = 0 // メモのtopマージン
 }
