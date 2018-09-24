@@ -23,10 +23,7 @@ class MemoListener(private val dragView: TextView) : OnTouchListener {
     override fun onTouch(view: View, event: MotionEvent): Boolean {
 
         // ダブルタップ時
-        if (gestureDetector.onTouchEvent(event)) {
-            dragView.setBackgroundColor(Color.GREEN)
-            println("Memo is Double Tapped")
-        }
+        gestureDetector.onTouchEvent(event)
 
         // タッチしている位置取得
         val x = event.rawX.toInt()
@@ -48,6 +45,7 @@ class MemoListener(private val dragView: TextView) : OnTouchListener {
         // 今回のタッチ位置を保持
         oldX = x
         oldY = y
+
         // イベント処理完了
         return true
     }
@@ -58,7 +56,7 @@ class MemoListener(private val dragView: TextView) : OnTouchListener {
         override fun onDoubleTap(e: MotionEvent): Boolean {
 
             dragView.setBackgroundColor(Color.GREEN)
-            println("Memo is tapped")
+            println("Memo is Double Tapped")
 
             return true
         }
