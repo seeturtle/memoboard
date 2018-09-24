@@ -38,6 +38,7 @@ class MemoActivity : AppCompatActivity() {
             }
 
             val intent = Intent(this, BoardActivity::class.java)
+            intent.putExtra("ID", memo?.boardId)
             startActivity(intent)
 
         }
@@ -46,6 +47,7 @@ class MemoActivity : AppCompatActivity() {
 
             // cancel処理(何もせずに戻る)
             val intent = Intent(this, BoardActivity::class.java)
+            intent.putExtra("ID", memo?.boardId)
             startActivity(intent)
 
         }
