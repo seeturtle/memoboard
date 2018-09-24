@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.example.ken.memoboard.listener.DragViewListener
 import kotlinx.android.synthetic.main.activity_board.*
 import java.util.*
 
@@ -43,9 +44,13 @@ class BoardActivity : AppCompatActivity() {
                 println("Memo is tapped")
             }
 
+            //ドラッグ時の挙動
+            val listener = DragViewListener(memo)
+            memo.setOnTouchListener(listener)
+
             // マージン設定
-            val topMargin = random.nextInt(dp.height-700)
-            val leftMargin = random.nextInt(dp.width-500)
+            val topMargin = random.nextInt(dp.height - 700)
+            val leftMargin = random.nextInt(dp.width - 500)
             val param = RelativeLayout.LayoutParams(WC, WC)
             param.setMargins(leftMargin, topMargin, 0, 0)
 
