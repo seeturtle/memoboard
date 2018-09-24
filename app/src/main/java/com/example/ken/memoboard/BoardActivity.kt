@@ -21,12 +21,25 @@ class BoardActivity : AppCompatActivity() {
     private val wc = ViewGroup.LayoutParams.WRAP_CONTENT
     private val random = Random()
     private lateinit var mRealm: Realm
+    // デフォルト設定
+    val name = "新規メモ"
+    val text = "新規メモ"
+    val textSize = 30f
+    val color = Color.LTGRAY
+    val padding = 20
+    val width = 500
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board)
 
         mRealm = Realm.getDefaultInstance()
+
+
+        //メモを表示する。
+        createMemoView()
+
 
         // 新規メモ作成ボタン
         fab.setOnClickListener { view ->
@@ -42,20 +55,59 @@ class BoardActivity : AppCompatActivity() {
     }
 
     /**
+     *データベースに紐づけられたメモを表示する
+     */
+    private fun createMemoView() {
+
+        val wm = getSystemService(WINDOW_SERVICE) as WindowManager
+        val dp = wm.defaultDisplay
+        val left = random.nextInt(dp.width - 500)
+        val top = random.nextInt(dp.height - 500)
+
+        if (intent != null) {
+            val boardId = intent.getLongExtra("ID", -1)
+            val board = mRealm.where(Board::class.java)
+                    .equalTo("id", boardId.toInt())
+                    .findFirst()
+
+            for( i in board?.memos!!){
+                // メモtextView作成
+                val memoView = TextView(this)
+                memoView.id = i.id.toInt()
+                memoView.text = i.text
+                memoView.textSize = textSize
+                memoView.setBackgroundColor(i.color)
+                memoView.setPadding(padding, padding, padding, padding)
+                memoView.width = width
+                // layout param
+                val param = RelativeLayout.LayoutParams(wc, wc)
+                param.setMargins(i.left, i.top, 0, 0)
+
+                // タッチイベント時の挙動
+                val listener = MemoListener(memoView, this)
+                memoView.setOnTouchListener(listener)
+
+                // メモを画面に追加
+                addContentView(memoView, param)
+
+
+            }
+
+
+
+        }
+    }
+
+
+
+
+    /**
      * 新規メモ作成
      */
     private fun createMemo() {
 
         val wm = getSystemService(WINDOW_SERVICE) as WindowManager
         val dp = wm.defaultDisplay
-
-        // デフォルト設定
-        val name = "新規メモ"
-        val text = "新規メモ"
-        val textSize = 30f
-        val color = Color.LTGRAY
-        val padding = 20
-        val width = 500
         val left = random.nextInt(dp.width - 500)
         val top = random.nextInt(dp.height - 500)
 
@@ -89,6 +141,11 @@ class BoardActivity : AppCompatActivity() {
             // メモモデル作成
             val memo: Memo = mRealm.createObject(primaryKeyValue = newId)
 
+            // 親のBoard取得
+            val boardId = intent.getLongExtra("ID", -1)
+            var board: Board? = mRealm.where(Board::class.java).equalTo("id",boardId).findFirst()
+
+
             // データ挿入
             memo.name = name
             memo.text = text
@@ -96,6 +153,8 @@ class BoardActivity : AppCompatActivity() {
             memo.date = Date()
             memo.left = left
             memo.top = top
+            //親のboardにmemoを保存
+            board?.memos?.add(memo)
 
             // テスト用出力
             println(memo.toString())

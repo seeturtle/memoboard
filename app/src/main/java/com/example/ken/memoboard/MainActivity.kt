@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
-import android.widget.ListView
 import android.widget.Toast
 import io.realm.Realm
 import io.realm.Sort
@@ -30,28 +29,41 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
 
+//        Realm.deleteRealm(config)
         //データベースのオープン処理
         mRealm = Realm.getDefaultInstance()
 
-        val listView: ListView = findViewById(R.id.listView)
+
 
 
         //adapter とListViewを連携させる。
-        val comments = mRealm.where(Board::class.java).findAll().sort("id", Sort.ASCENDING)
-        this.listView.adapter = BoardAdapter(comments)
+        val boards = mRealm.where(Board::class.java).findAll().sort("id", Sort.ASCENDING)
+        listView.adapter = BoardAdapter(boards)
 
+        this.listView.setOnItemClickListener { parent, view, position, id ->
+//            val board = parent.getItemAtPosition(position) as Board
+//            this.startActivity<BoardActivity>("id" to board.id)
 
-        boardActivity.setOnClickListener {
-            // 画面作成
+            val adapter = listView.getAdapter() as BoardAdapter
+            val board = adapter.getItem(position)
             val intent = Intent(this@MainActivity, BoardActivity::class.java)
-            // 画面遷移
+            intent.putExtra("ID", board?.id)
             startActivity(intent)
+
         }
+
+
+//        boardActivity.setOnClickListener {
+//            // 画面作成
+//            val intent = Intent(this@MainActivity, BoardActivity::class.java)
+//            // 画面遷移
+//            startActivity(intent)
+//        }
 
         createButton.setOnClickListener {
             //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-            //テキスト入力を受け付けるビューを作成します。
+            //テキスト入力を受け付けるビューを作成。
             val editView = EditText(this@MainActivity)
             AlertDialog.Builder(this@MainActivity)
                     .setIcon(android.R.drawable.ic_dialog_info)
