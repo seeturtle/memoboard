@@ -10,6 +10,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
+import com.example.ken.memoboard.activity.BoardActivity
+import com.example.ken.memoboard.model.Board
 import io.realm.Realm
 import io.realm.Sort
 import io.realm.kotlin.createObject
