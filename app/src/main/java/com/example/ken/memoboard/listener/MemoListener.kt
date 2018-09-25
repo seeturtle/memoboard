@@ -6,14 +6,17 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.widget.TextView
-import com.example.ken.memoboard.BoardActivity
-import com.example.ken.memoboard.MemoActivity
+import com.example.ken.memoboard.activity.BoardActivity
+import com.example.ken.memoboard.activity.MemoActivity
+import com.example.ken.memoboard.model.Memo
+import io.realm.Realm
+import io.realm.kotlin.where
 
 
 /**
  * メモ用タッチイベントListener
  */
-class MemoListener(private val dragView: TextView, private val boardActivity: BoardActivity) : OnTouchListener {
+class MemoListener(private val dragView: TextView, private val boardActivity: BoardActivity, private val realm: Realm) : OnTouchListener {
 
     // ドラッグ中に移動量を取得するための変数
     private var oldX: Int = 0
@@ -41,6 +44,17 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
                 val top = dragView.top + (y - oldY)
                 // Viewを移動する
                 dragView.layout(left, top, left + dragView.width, top + dragView.height)
+            }
+
+            MotionEvent.ACTION_UP -> {
+
+                val memo = realm.where<Memo>().equalTo("id", dragView.id).findFirst()
+                realm.executeTransaction {
+                    memo?.left = dragView.left + (x - oldX)
+                    memo?.top = dragView.top + (y - oldY)
+
+                }
+
             }
 
         }
