@@ -1,4 +1,4 @@
-package com.example.ken.memoboard
+package com.example.ken.memoboard.activity
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -10,7 +10,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
-import com.example.ken.memoboard.activity.BoardActivity
+import com.example.ken.memoboard.BoardAdapter
+import com.example.ken.memoboard.R
 import com.example.ken.memoboard.model.Board
 import io.realm.Realm
 import io.realm.Sort
@@ -20,30 +21,24 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.util.*
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mRealm: Realm
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
 //
 //        val realmConfig = RealmConfiguration.Builder().build()
 //        Realm.deleteRealm(realmConfig)
+
         //データベースのオープン処理
         mRealm = Realm.getDefaultInstance()
-
-
-
 
         //adapter とListViewを連携させる。
         val boards = mRealm.where(Board::class.java).findAll().sort("id", Sort.ASCENDING)
         listView.adapter = BoardAdapter(boards)
-
 
         //リストのタップで画面遷移
         listView.setOnItemClickListener { parent, view, position, id ->
@@ -54,12 +49,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         //リストの長押しで削除
-        listView.setOnItemLongClickListener{ parent, view, position, id ->
+        listView.setOnItemLongClickListener { parent, view, position, id ->
             val adapter = listView.getAdapter() as BoardAdapter
             val board = adapter.getItem(position)
-
             Snackbar.make(view, "削除しますか？", Snackbar.LENGTH_LONG)
                     .setAction("OK") { view ->
                         mRealm.executeTransaction { board?.deleteFromRealm() }
@@ -80,7 +73,6 @@ class MainActivity : AppCompatActivity() {
                     //setViewにてビューを設定します。
                     .setView(editView)
                     .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, whichButton ->
-
                         // ボードデータ新規作成
                         createBoard(editView)
                     })
@@ -88,7 +80,6 @@ class MainActivity : AppCompatActivity() {
                     .show()
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -111,30 +102,23 @@ class MainActivity : AppCompatActivity() {
         this.mRealm.close()
     }
 
-
-    fun createBoard(editView : EditText){
+    fun createBoard(editView: EditText) {
         mRealm.executeTransaction {
-
             // Auto Increment機能がないのでIDの最大値を取得してくる
             val max = mRealm.where<Board>().max("id")
             var newId: Long = 0
             if (max != null) {//nullチェック
                 newId = max.toLong() + 1
             }
-
             //新規Board作成　IDを入れる。
             val board: Board = mRealm.createObject<Board>(primaryKeyValue = newId)
-
             // データ挿入
             board.name = editView.text.toString()
             board.date = Date()
-
             //入力した文字をトースト出力する
             Toast.makeText(this@MainActivity,
                     board.toString(),
                     Toast.LENGTH_LONG).show()
-
-
         }
     }
 }
