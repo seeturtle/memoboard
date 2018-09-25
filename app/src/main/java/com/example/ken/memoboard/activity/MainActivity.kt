@@ -1,17 +1,15 @@
-package com.example.ken.memoboard.activity
+package com.example.ken.memoboard
 
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
-import com.example.ken.memoboard.model.Board
-import com.example.ken.memoboard.BoardAdapter
-import com.example.ken.memoboard.R
 import io.realm.Realm
 import io.realm.Sort
 import io.realm.kotlin.createObject
@@ -38,33 +36,40 @@ class MainActivity : AppCompatActivity() {
         mRealm = Realm.getDefaultInstance()
 
 
+
+
         //adapter とListViewを連携させる。
         val boards = mRealm.where(Board::class.java).findAll().sort("id", Sort.ASCENDING)
         listView.adapter = BoardAdapter(boards)
 
-        this.listView.setOnItemClickListener { parent, view, position, id ->
-            //            val board = parent.getItemAtPosition(position) as Board
-//            this.startActivity<BoardActivity>("id" to board.id)
 
+        //リストのタップで画面遷移
+        listView.setOnItemClickListener { parent, view, position, id ->
             val adapter = listView.getAdapter() as BoardAdapter
             val board = adapter.getItem(position)
             val intent = Intent(this@MainActivity, BoardActivity::class.java)
             intent.putExtra("ID", board?.id)
             startActivity(intent)
-
         }
 
 
-//        boardActivity.setOnClickListener {
-//            // 画面作成
-//            val intent = Intent(this@MainActivity, BoardActivity::class.java)
-//            // 画面遷移
-//            startActivity(intent)
-//        }
+        //リストの長押しで削除
+        listView.setOnItemLongClickListener{ parent, view, position, id ->
+            val adapter = listView.getAdapter() as BoardAdapter
+            val board = adapter.getItem(position)
 
+            Snackbar.make(view, "削除しますか？", Snackbar.LENGTH_LONG)
+                    .setAction("OK") { view ->
+                        mRealm.executeTransaction { board?.deleteFromRealm() }
+                        Snackbar.make(view, "削除されました", Snackbar.LENGTH_SHORT)
+                                .show()
+                    }
+                    .show()
+            true
+        }
+
+        //ボード作成
         createButton.setOnClickListener {
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
             //テキスト入力を受け付けるビューを作成。
             val editView = EditText(this@MainActivity)
             AlertDialog.Builder(this@MainActivity)
@@ -74,29 +79,8 @@ class MainActivity : AppCompatActivity() {
                     .setView(editView)
                     .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, whichButton ->
 
-                        mRealm.executeTransaction {
-
-                            // Auto Increment機能がないのでIDの最大値を取得してくる
-                            val max = mRealm.where<Board>().max("id")
-                            var newId: Long = 0
-                            if (max != null) {//nullチェック
-                                newId = max.toLong() + 1
-                            }
-
-                            //新規Board作成　IDを入れる。
-                            val board: Board = mRealm.createObject<Board>(primaryKeyValue = newId)
-
-                            // データ挿入
-                            board.name = editView.text.toString()
-                            board.date = Date()
-
-                            //入力した文字をトースト出力する
-                            Toast.makeText(this@MainActivity,
-                                    board.toString(),
-                                    Toast.LENGTH_LONG).show()
-
-
-                        }
+                        // ボードデータ新規作成
+                        createBoard(editView)
                     })
                     .setNegativeButton("キャンセル", DialogInterface.OnClickListener { dialog, whichButton -> })
                     .show()
@@ -123,5 +107,32 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         this.mRealm.close()
+    }
+
+
+    fun createBoard(editView : EditText){
+        mRealm.executeTransaction {
+
+            // Auto Increment機能がないのでIDの最大値を取得してくる
+            val max = mRealm.where<Board>().max("id")
+            var newId: Long = 0
+            if (max != null) {//nullチェック
+                newId = max.toLong() + 1
+            }
+
+            //新規Board作成　IDを入れる。
+            val board: Board = mRealm.createObject<Board>(primaryKeyValue = newId)
+
+            // データ挿入
+            board.name = editView.text.toString()
+            board.date = Date()
+
+            //入力した文字をトースト出力する
+            Toast.makeText(this@MainActivity,
+                    board.toString(),
+                    Toast.LENGTH_LONG).show()
+
+
+        }
     }
 }
