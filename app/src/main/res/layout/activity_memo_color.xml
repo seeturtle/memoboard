@@ -11,13 +11,13 @@
         android:id="@+id/colorCancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginLeft="72dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginRight="68dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="8dp"
         android:text="cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/valueBar" />
 
     <com.larswerkman.holocolorpicker.ColorPicker
@@ -115,19 +115,19 @@
 
     <Button
         android:id="@+id/colorSaveButton"
-        android:layout_width="wrap_content"
+        android:layout_width="86dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="8dp"
         android:text="OK"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/colorCancelButton"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.57"
+        app:layout_constraintStart_toEndOf="@+id/colorCancelButton"
         app:layout_constraintTop_toBottomOf="@+id/valueBar" />
 
     <android.support.constraint.Barrier

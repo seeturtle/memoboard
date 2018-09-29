@@ -1,5 +1,7 @@
 package com.example.ken.memoboard.activity
 
+import android.app.AlertDialog
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -10,6 +12,9 @@ import com.example.ken.memoboard.model.Memo
 import io.realm.Realm
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_memo.*
+import android.content.DialogInterface
+
+
 
 
 class MemoActivity : AppCompatActivity() {
@@ -67,14 +72,17 @@ class MemoActivity : AppCompatActivity() {
             val intent = Intent(this, BoardActivity::class.java)
             intent.putExtra("ID", memo?.boardId)
 
-            Snackbar.make(it, "このメモを削除しますか？", Snackbar.LENGTH_LONG)
-                    .setAction("OK") {
-                        // delete処理
+            AlertDialog.Builder(this)
+                    .setTitle("メモの削除")
+                    .setMessage("このメモを本当に削除しますか?")
+                    .setPositiveButton("OK") { dialog, which ->
+                        // OK button pressed
                         mRealm.executeTransaction {
                             memo?.deleteFromRealm()
                         }
                         startActivity(intent)
                     }
+                    .setNegativeButton("Cancel", null)
                     .show()
         }
 

@@ -25,7 +25,8 @@ class MemoColorActivity : AppCompatActivity() {
         colorPicker?.addOpacityBar(opacityBar)
         colorPicker?.addSaturationBar(saturationbar)
         colorPicker?.addValueBar(valueBar)
-        colorPicker.oldCenterColor = memoColor
+        colorPicker?.color = memoColor
+        colorPicker?.showOldCenterColor = false
         colorPicker?.setOnColorChangedListener { changedMemoColor = it }
 
         colorSaveButton.setOnClickListener {
