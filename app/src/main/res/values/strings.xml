@@ -7,4 +7,6 @@
     <string name="saveButton">Save</string>
     <string name="cancelButton">Cancel</string>
     <string name="deleteButton">Delete</string>
+    <string name="MemoColorTextView">メモの色をカスタマイズしてください</string>
+    <string name="memoColorButton" >edit color</string>
 </resources>

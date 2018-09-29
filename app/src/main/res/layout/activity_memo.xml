@@ -10,51 +10,50 @@
         android:id="@+id/editMemo"
         android:layout_width="242dp"
         android:layout_height="98dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/editMemo"
         android:inputType="textMultiLine"
         android:lines="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.153"
-        android:autofillHints="" />
+        app:layout_constraintVertical_bias="0.373" />
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/saveButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/editMemo"
         app:layout_constraintTop_toBottomOf="@+id/editMemo"
-        app:layout_constraintVertical_bias="0.119" />
+        app:layout_constraintVertical_bias="0.155" />
 
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/cancelButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/editMemo"
         app:layout_constraintTop_toBottomOf="@+id/editMemo"
-        app:layout_constraintVertical_bias="0.119" />
+        app:layout_constraintVertical_bias="0.155" />
 
     <Button
         android:id="@+id/deleteButton"
@@ -62,11 +61,29 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/colorAccent"
+        android:background="@android:color/holo_red_dark"
         android:text="@string/deleteButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editMemo" />
+        app:layout_constraintTop_toBottomOf="@+id/editMemo"
+        app:layout_constraintVertical_bias="0.54" />
+
+    <Button
+        android:id="@+id/editColorButton"
+        android:layout_width="167dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/memoColorButton"
+        app:layout_constraintBottom_toTopOf="@+id/editMemo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.785" />
 
 </android.support.constraint.ConstraintLayout>
