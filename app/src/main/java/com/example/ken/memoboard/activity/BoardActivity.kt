@@ -82,7 +82,7 @@ class BoardActivity : AppCompatActivity() {
                 memoView.setPadding(padding, padding, padding, padding)
                 memoView.width = width
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    memoView.elevation = 30f  // 影エフェクト(API21以上)
+                    memoView.elevation = 40f  // 影エフェクト(API21以上)
                 }
 
                 // layout param
