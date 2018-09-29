@@ -1,6 +1,7 @@
 package com.example.ken.memoboard.activity
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -29,7 +30,7 @@ class BoardActivity : AppCompatActivity() {
     val name = "新規メモ"
     val text = "新規メモ"
     val textSize = 30f
-    val color = Color.LTGRAY
+    val color = Color.YELLOW
     val padding = 20
     val width = 500
 
@@ -80,6 +81,10 @@ class BoardActivity : AppCompatActivity() {
                 memoView.setBackgroundColor(memo.color)
                 memoView.setPadding(padding, padding, padding, padding)
                 memoView.width = width
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    memoView.elevation = 30f  // 影エフェクト(API21以上)
+                }
+
                 // layout param
                 val param = RelativeLayout.LayoutParams(wc, wc)
                 param.setMargins(memo.left, memo.top, 0, 0)
