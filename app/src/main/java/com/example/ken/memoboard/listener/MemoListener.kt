@@ -56,7 +56,7 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
 
                 }
 
-                // アクティビティ再開 (メモ作成時に他の一部のメモが移動してしまうバグの応急処置だが、非効率かも?)
+                // アクティビティ再開 (メモ作成時に他の一部のメモが移動してしまうバグの応急処置(気合い)だが、非効率かも?)
                 boardActivity.recreate()
 
             }
