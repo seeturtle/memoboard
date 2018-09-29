@@ -7,24 +7,26 @@ import android.support.v7.app.AppCompatActivity
 import com.example.ken.memoboard.R
 import kotlinx.android.synthetic.main.activity_memo_color.*
 
+
 class MemoColorActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        color_picker?.addValueBar(value_bar)
-        color_picker?.addOpacityBar(opacity_bar)
-        color_picker?.addSVBar(sv_bar)
         setContentView(R.layout.activity_memo_color)
 
-        // インテントからmemoId取得
+        // インテントからmemoId, memoColor取得
         val intent = intent
         val memoId = intent.getIntExtra("memoId", 1)
         var memoColor = intent.getIntExtra("memoColor", Color.GRAY)
         var changedMemoColor = intent.getIntExtra("memoColor", Color.GRAY)
 
-        color_picker?.setOnColorChangedListener {
-            changedMemoColor = it
-        }
+        // color picker の設定
+        colorPicker?.addSVBar(svBar)
+        colorPicker?.addOpacityBar(opacityBar)
+        colorPicker?.addSaturationBar(saturationbar)
+        colorPicker?.addValueBar(valueBar)
+        colorPicker.oldCenterColor = memoColor
+        colorPicker?.setOnColorChangedListener { changedMemoColor = it }
 
         colorSaveButton.setOnClickListener {
 
@@ -46,4 +48,5 @@ class MemoColorActivity : AppCompatActivity() {
         }
 
     }
+
 }
