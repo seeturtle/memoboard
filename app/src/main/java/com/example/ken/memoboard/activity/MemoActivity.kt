@@ -2,6 +2,7 @@ package com.example.ken.memoboard.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import com.example.ken.memoboard.R
@@ -66,13 +67,15 @@ class MemoActivity : AppCompatActivity() {
             val intent = Intent(this, BoardActivity::class.java)
             intent.putExtra("ID", memo?.boardId)
 
-            // delete処理
-            mRealm.executeTransaction {
-                memo?.deleteFromRealm()
-            }
-
-            startActivity(intent)
-
+            Snackbar.make(it, "このメモを削除しますか？", Snackbar.LENGTH_LONG)
+                    .setAction("OK") {
+                        // delete処理
+                        mRealm.executeTransaction {
+                            memo?.deleteFromRealm()
+                        }
+                        startActivity(intent)
+                    }
+                    .show()
         }
 
         // メモの色変更
