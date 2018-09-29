@@ -40,10 +40,8 @@ class BoardActivity : AppCompatActivity() {
 
         mRealm = Realm.getDefaultInstance()
 
-
         //メモを表示する。
         createMemoView()
-
 
         // 新規メモ作成ボタン
         fab.setOnClickListener { view ->
