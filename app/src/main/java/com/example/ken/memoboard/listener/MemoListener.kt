@@ -48,12 +48,16 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
 
             MotionEvent.ACTION_UP -> {
 
+                // Realmに位置を保存
                 val memo = realm.where<Memo>().equalTo("id", dragView.id).findFirst()
                 realm.executeTransaction {
                     memo?.left = dragView.left + (x - oldX)
                     memo?.top = dragView.top + (y - oldY)
 
                 }
+
+                // アクティビティ再開 (メモ作成時に他の一部のメモが移動してしまうバグの応急処置(気合い)だが、非効率かも?)
+                boardActivity.recreate()
 
             }
 

@@ -54,6 +54,9 @@ class BoardActivity : AppCompatActivity() {
             // 新規メモ作成
             createMemo()
 
+            // アクティビティ再開
+            recreate()
+
         }
 
     }
@@ -106,18 +109,6 @@ class BoardActivity : AppCompatActivity() {
         val left = random.nextInt(dp.width - 500)
         val top = random.nextInt(dp.height - 500)
 
-        // メモtextView作成
-        val memoView = TextView(this)
-        memoView.text = text
-        memoView.textSize = textSize
-        memoView.setBackgroundColor(color)
-        memoView.setPadding(padding, padding, padding, padding)
-        memoView.width = width
-
-        // タッチイベント時の挙動
-        val listener = MemoListener(memoView, this, mRealm)
-        memoView.setOnTouchListener(listener)
-
         // Realm保存
         mRealm.executeTransaction {
 
@@ -127,9 +118,6 @@ class BoardActivity : AppCompatActivity() {
             if (max != null) {//nullチェック
                 newId = max.toLong() + 1
             }
-
-            // memoViewにもID設定
-            memoView.id = newId.toInt()
 
             // メモモデル作成
             val memo: Memo = mRealm.createObject(primaryKeyValue = newId)
@@ -150,13 +138,6 @@ class BoardActivity : AppCompatActivity() {
             board?.memos?.add(memo)
 
         }
-
-        // layout param
-        val param = RelativeLayout.LayoutParams(wc, wc)
-        param.setMargins(left, top, 0, 0)
-
-        // メモを画面に追加
-        addContentView(memoView, param)
 
     }
 

@@ -27,7 +27,9 @@
         <activity
             android:name=".activity.MemoActivity"
             android:label="@string/title_activity_memo" />
-        <activity android:name=".activity.MemoColorActivity"></activity>
+        <activity
+            android:name=".activity.MemoColorActivity"
+            android:label="@string/title_activity_memo_color"></activity>
     </application>
 
 </manifest>
