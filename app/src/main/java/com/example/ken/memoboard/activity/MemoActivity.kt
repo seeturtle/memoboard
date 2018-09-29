@@ -31,6 +31,7 @@ class MemoActivity : AppCompatActivity() {
         // テキストフィールドに表示
         editMemo.setText(memo?.text, TextView.BufferType.NORMAL)
 
+        // 保存ボタン
         saveButton.setOnClickListener {
 
             // save処理
@@ -44,11 +45,27 @@ class MemoActivity : AppCompatActivity() {
 
         }
 
+        // キャンセルボタン
         cancelButton.setOnClickListener {
 
             // cancel処理(何もせずに戻る)
             val intent = Intent(this, BoardActivity::class.java)
             intent.putExtra("ID", memo?.boardId)
+            startActivity(intent)
+
+        }
+
+        // 削除ボタン
+        deleteButton.setOnClickListener {
+
+            val intent = Intent(this, BoardActivity::class.java)
+            intent.putExtra("ID", memo?.boardId)
+
+            // delete処理
+            mRealm.executeTransaction {
+                memo?.deleteFromRealm()
+            }
+
             startActivity(intent)
 
         }

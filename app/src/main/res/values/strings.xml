@@ -6,4 +6,5 @@
     <string name="editMemo">メモを書いてください</string>
     <string name="saveButton">Save</string>
     <string name="cancelButton">Cancel</string>
+    <string name="deleteButton">Delete</string>
 </resources>
