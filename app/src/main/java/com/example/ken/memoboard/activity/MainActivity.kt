@@ -62,24 +62,21 @@ class MainActivity : AppCompatActivity() {
         //データベースのオープン処理
         mRealm = Realm.getDefaultInstance()
 
-        //　データのリスト表示
+        //　ボードをリスト表示
         setUpRecyclerView()
 
+        //  ボードのクリック
         my_recycler_view.addOnItemTouchListener(
                 RecyclerItemClickListener(this, object : RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
-                        // ここで処理
-                        adapter = MyRecyclerViewAdapter(mRealm.where<Board>(Board::class.java!!).findAll())
-                        val board = adapter.getItem(position)
-                        val intent = Intent(this@MainActivity, BoardActivity::class.java)
-                        intent.putExtra("ID", board?.id)
-                        startActivity(intent)
+                        // 画面遷移
+                        enterBoard(position)
 
                     }
                 })
         )
 
-        //ボード作成
+        //  ボード作成ボタンのクリック
         createButton.setOnClickListener {
             //テキスト入力を受け付けるビューを作成。
             val editView = EditText(this@MainActivity)
@@ -120,6 +117,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    fun enterBoard(position: Int){
+        adapter = MyRecyclerViewAdapter(mRealm.where<Board>(Board::class.java!!).findAll())
+        val board = adapter.getItem(position)
+        val intent = Intent(this@MainActivity, BoardActivity::class.java)
+        intent.putExtra("ID", board?.id)
+        startActivity(intent)
+    }
 
     private fun setUpRecyclerView() {
         adapter = MyRecyclerViewAdapter(mRealm.where<Board>(Board::class.java!!).findAll())
