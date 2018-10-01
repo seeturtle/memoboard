@@ -1,4 +1,4 @@
-package com.example.ken.memoboard
+package com.example.ken.memoboard.model
 
 import io.realm.RealmList
 import io.realm.RealmObject

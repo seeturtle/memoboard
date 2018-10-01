@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,13 +21,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BoardActivity"
+            android:name=".activity.BoardActivity"
             android:label="@string/title_activity_board"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activity.MainActivity" />
         <activity
-            android:name=".MemoActivity"
-            android:label="@string/title_activity_memo"
-            android:parentActivityName=".BoardActivity" />
+            android:name=".activity.MemoActivity"
+            android:label="@string/title_activity_memo" />
+        <activity
+            android:name=".activity.MemoColorActivity"
+            android:label="@string/title_activity_memo_color"></activity>
     </application>
 
 </manifest>

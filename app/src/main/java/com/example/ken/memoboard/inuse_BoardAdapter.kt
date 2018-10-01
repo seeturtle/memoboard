@@ -4,11 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.ken.memoboard.model.Board
 import io.realm.OrderedRealmCollection
 import io.realm.RealmBaseAdapter
 
 
-class BoardAdapter(data: OrderedRealmCollection<Board>?) : RealmBaseAdapter<Board>(data) {
+class inuse_BoardAdapter(data: OrderedRealmCollection<Board>?) : RealmBaseAdapter<Board>(data) {
 
     inner class ViewHolder(cell: View) {
         val id = cell.findViewById<TextView>(android.R.id.text1)

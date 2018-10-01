@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Memoboard</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_board">Board Page</string>
+    <string name="title_activity_board">ボード</string>
     <string name="title_activity_memo">メモ編集</string>
-    <string name="editMemo">ここにメモを書いてね</string>
+    <string name="title_activity_memo_color">メモカラー編集</string>
+    <string name="editMemo">メモを書いてください</string>
     <string name="saveButton">Save</string>
     <string name="cancelButton">Cancel</string>
+    <string name="deleteButton">Delete</string>
+    <string name="MemoColorTextView">メモの色をカスタマイズしてください</string>
+    <string name="memoColorButton" >edit color</string>
 </resources>
