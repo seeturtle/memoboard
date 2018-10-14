@@ -8,4 +8,14 @@
     tools:context=".activity.BoardActivity"
     tools:showIn="@layout/activity_board">
 
+    <com.example.ken.memoboard.MyView
+        android:layout_marginTop="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="1dp"
+        android:layout_marginLeft="1dp" />
+
 </android.support.constraint.ConstraintLayout>
