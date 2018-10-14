@@ -17,4 +17,6 @@ open class Memo : RealmObject() {
     var date: Date = Date() // 日付
     var left: Int = 0 // メモのleftマージン
     var top: Int = 0 // メモのtopマージン
+    var width: Int = 0 // メモの幅
+    var height: Int = 0 // メモの高さ
 }
