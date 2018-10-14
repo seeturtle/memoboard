@@ -1,11 +1,8 @@
 package com.example.ken.memoboard.listener
 
 import android.content.Intent
-import android.view.GestureDetector
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.view.View.OnTouchListener
-import android.view.ViewGroup
 import android.widget.TextView
 import com.example.ken.memoboard.activity.BoardActivity
 import com.example.ken.memoboard.activity.MemoActivity
@@ -17,13 +14,15 @@ import io.realm.kotlin.where
 /**
  * メモ用タッチイベントListener
  */
-class MemoListener(private val dragView: TextView, private val boardActivity: BoardActivity, private val realm: Realm) : OnTouchListener {
+class MemoListener(private val dragView: TextView, private val boardActivity: BoardActivity, private val realm: Realm, private val dp: Display) : OnTouchListener {
 
     // ドラッグ中に移動量を取得するための変数
     private var oldX: Int = 0
     private var oldY: Int = 0
 
     private val gestureDetector = GestureDetector(dragView.context, GestureListener())
+
+    private val bottomMargin = 210
 
     // タップ時に発生するイベント
     override fun onTouch(view: View, event: MotionEvent): Boolean {
@@ -40,16 +39,24 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
 
             MotionEvent.ACTION_DOWN -> {
                 dragView.bringToFront()
+                dragView.alpha = 0.7f
             }
 
             MotionEvent.ACTION_MOVE -> {
 
                 // 今回イベントでのView移動先の位置
-                val left = dragView.left + (x - oldX)
-                val top = dragView.top + (y - oldY)
-                // Viewを移動する
+                var left = dragView.left + (x - oldX)
+                var top = dragView.top + (y - oldY)
 
+                // 枠外から出ないようにする
+                if (dragView.left < 0) left = 0
+                if (dragView.right > dp.width) left = dp.width - dragView.width
+                if (dragView.top < 0) top = 0
+                if (dragView.bottom > (dp.height - bottomMargin)) top = (dp.height - bottomMargin) - dragView.height
+
+                // Viewを移動する
                 dragView.layout(left, top, left + dragView.width, top + dragView.height)
+
             }
 
             MotionEvent.ACTION_UP -> {
@@ -71,8 +78,16 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
 
                 }
 
+                dragView.alpha = 1.0f
+
             }
 
+        }
+
+        when (event.edgeFlags) {
+            MotionEvent.EDGE_TOP -> {
+                println("aaa")
+            }
         }
 
         // 今回のタッチ位置を保持
