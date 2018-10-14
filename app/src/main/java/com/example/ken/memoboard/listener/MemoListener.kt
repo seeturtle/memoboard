@@ -5,6 +5,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import android.view.ViewGroup
 import android.widget.TextView
 import com.example.ken.memoboard.activity.BoardActivity
 import com.example.ken.memoboard.activity.MemoActivity
@@ -34,25 +35,39 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
         val x = event.rawX.toInt()
         val y = event.rawY.toInt()
 
-        // Actinoによって分岐
+        // Actionによって分岐
         when (event.action) {
 
-            MotionEvent.ACTION_MOVE -> {
-                // 今回イベントでのView移動先の位置
+            MotionEvent.ACTION_DOWN -> {
+                dragView.bringToFront()
+            }
 
+            MotionEvent.ACTION_MOVE -> {
+
+                // 今回イベントでのView移動先の位置
                 val left = dragView.left + (x - oldX)
                 val top = dragView.top + (y - oldY)
                 // Viewを移動する
+
                 dragView.layout(left, top, left + dragView.width, top + dragView.height)
             }
 
             MotionEvent.ACTION_UP -> {
 
+                // 今回イベントでのView移動先の位置
+                val left = dragView.left + (x - oldX)
+                val top = dragView.top + (y - oldY)
+
+                // layoutを固定
+                val param = dragView.layoutParams as ViewGroup.MarginLayoutParams
+                param.setMargins(left, top, 0, 0)
+                dragView.layoutParams = param
+
                 // Realmに位置を保存
                 val memo = realm.where<Memo>().equalTo("id", dragView.id).findFirst()
                 realm.executeTransaction {
-                    memo?.left = dragView.left + (x - oldX)
-                    memo?.top = dragView.top + (y - oldY)
+                    memo?.left = left
+                    memo?.top = top
 
                 }
 
@@ -82,7 +97,7 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
 
             return true
         }
-    }
 
+    }
 
 }
