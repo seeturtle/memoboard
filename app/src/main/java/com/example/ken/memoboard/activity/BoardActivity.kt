@@ -64,6 +64,8 @@ class BoardActivity : AppCompatActivity() {
      * データベースに紐づけられたメモを表示する
      */
     private fun createMemoView() {
+        val wm = getSystemService(WINDOW_SERVICE) as WindowManager
+        val dp = wm.defaultDisplay
 
         if (intent != null) {
 
@@ -90,7 +92,7 @@ class BoardActivity : AppCompatActivity() {
                 param.setMargins(memo.left, memo.top, 0, 0)
 
                 // タッチイベント時の挙動
-                val listener = MemoListener(memoView, this, mRealm)
+                val listener = MemoListener(memoView, this, mRealm, dp)
                 memoView.setOnTouchListener(listener)
 
                 // メモを画面に追加
