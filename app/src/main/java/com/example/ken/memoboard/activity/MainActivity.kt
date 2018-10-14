@@ -1,8 +1,12 @@
 package com.example.ken.memoboard.activity
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.*
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
@@ -35,7 +39,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mRealm: Realm
     private lateinit var adapter: MyRecyclerViewAdapter
 
-    private inner class TouchHelperCallback internal constructor() : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+    // スワイプ処理のためのクラス
+    private inner class TouchHelperCallback internal constructor(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+        private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete_white_24)
+        private val intrinsicWidth = deleteIcon?.intrinsicWidth
+        private val intrinsicHeight = deleteIcon?.intrinsicHeight
+        private val background = ColorDrawable()
+        private val backgroundColor = Color.parseColor("#f44336")
+        private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
         override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
             return true
@@ -45,8 +57,43 @@ class MainActivity : AppCompatActivity() {
             DataHelper.deleteItemAsync(mRealm!!, viewHolder.itemId)
         }
 
-        override fun isLongPressDragEnabled(): Boolean {
-            return true
+        // スワイプしたときに呼ばれるメソッド
+        override fun onChildDraw(
+                c: Canvas?, recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder,
+                dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+        ) {
+
+            val itemView = viewHolder.itemView
+            val itemHeight = itemView.bottom - itemView.top
+            val isCanceled = dX == 0f && !isCurrentlyActive
+
+            if (isCanceled) {
+                clearCanvas(c, itemView.right + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                return
+            }
+
+            // 赤い背景描写
+            background.color = backgroundColor
+            background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+            background.draw(c)
+
+            // アイコンの表示位置計算
+            val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight!!) / 2
+            val deleteIconMargin = (itemHeight - intrinsicHeight) / 2
+            val deleteIconLeft = itemView.right - deleteIconMargin - intrinsicWidth!!
+            val deleteIconRight = itemView.right - deleteIconMargin
+            val deleteIconBottom = deleteIconTop + intrinsicHeight
+
+            // アイコンの描画
+            deleteIcon?.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
+            deleteIcon?.draw(c)
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        }
+
+        private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
+            c?.drawRect(left, top, right, bottom, clearPaint)
         }
     }
 
@@ -132,7 +179,8 @@ class MainActivity : AppCompatActivity() {
         my_recycler_view.setHasFixedSize(true)
         my_recycler_view.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
-        val touchHelperCallback = TouchHelperCallback()
+        // スワイプの設定
+        val touchHelperCallback = TouchHelperCallback(this)
         val touchHelper = ItemTouchHelper(touchHelperCallback)
         touchHelper.attachToRecyclerView(my_recycler_view)
     }

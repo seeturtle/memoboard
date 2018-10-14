@@ -35,11 +35,9 @@ internal class MyRecyclerViewAdapter(data: OrderedRealmCollection<Board>) :
         //ビューホルダーに値を入れる
         holder.id?.text = obj.id.toString()
         holder.name?.text = obj.name
-
     }
 
     override fun getItemId(index: Int): Long {
-
         return getItem(index)!!.id.toLong()
     }
 
