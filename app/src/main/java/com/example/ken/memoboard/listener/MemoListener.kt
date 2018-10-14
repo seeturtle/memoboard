@@ -85,17 +85,30 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
                 val memo = realm.where<Memo>().equalTo("id", dragView.id).findFirst()
 
                 if (changeMemoSizeFlag) {
-                    // 高さ変更
+                    // 大きさ変更
                     dragView.width += left - dragView.left
                     dragView.height += top - dragView.top
-                    if (dragView.width < defaultWidth) dragView.width = defaultWidth
-                    if (dragView.height < defaultHeight) dragView.height = defaultHeight
 
                     // Realmに大きさを保存
                     realm.executeTransaction {
                         memo?.width = dragView.width
                         memo?.height = dragView.height
                     }
+
+                    // 大きさ制限
+                    if (dragView.width < defaultWidth) {
+                        dragView.width = defaultWidth
+                        realm.executeTransaction {
+                            memo?.width = defaultWidth
+                        }
+                    }
+                    if (dragView.height < defaultHeight) {
+                        dragView.height = defaultHeight
+                        realm.executeTransaction {
+                            memo?.height = defaultHeight
+                        }
+                    }
+
 
 
                     changeMemoSizeFlag = false
