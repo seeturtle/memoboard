@@ -23,6 +23,11 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
     private val gestureDetector = GestureDetector(dragView.context, GestureListener())
 
     private val bottomMargin = 210
+    private val defaultWidth = 400
+    private val defaultHeight = 150
+
+    // 大きさ変更のフラグ
+    private var changeMemoSizeFlag: Boolean = false
 
     // タップ時に発生するイベント
     override fun onTouch(view: View, event: MotionEvent): Boolean {
@@ -40,6 +45,10 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
             MotionEvent.ACTION_DOWN -> {
                 dragView.bringToFront()
                 dragView.alpha = 0.7f
+
+                if (x > (dragView.left + dragView.width - 100) && y > (dragView.top + dragView.height - 100)) {
+                    changeMemoSizeFlag = true
+                }
             }
 
             MotionEvent.ACTION_MOVE -> {
@@ -48,14 +57,22 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
                 var left = dragView.left + (x - oldX)
                 var top = dragView.top + (y - oldY)
 
-                // 枠外から出ないようにする
-                if (dragView.left < 0) left = 0
-                if (dragView.right > dp.width) left = dp.width - dragView.width
-                if (dragView.top < 0) top = 0
-                if (dragView.bottom > (dp.height - bottomMargin)) top = (dp.height - bottomMargin) - dragView.height
+                if (changeMemoSizeFlag) {
 
-                // Viewを移動する
-                dragView.layout(left, top, left + dragView.width, top + dragView.height)
+                    // Viewの大きさ変更
+                    dragView.layout(dragView.left, dragView.top, left + dragView.width, top + dragView.height)
+
+                } else {
+
+                    // 枠外から出ないようにする
+                    if (dragView.left < 0) left = 0
+                    if (dragView.right > dp.width) left = dp.width - dragView.width
+                    if (dragView.top < 0) top = 0
+                    if (dragView.bottom > (dp.height - bottomMargin)) top = (dp.height - bottomMargin) - dragView.height
+
+                    // Viewを移動する
+                    dragView.layout(left, top, left + dragView.width, top + dragView.height)
+                }
 
             }
 
@@ -65,17 +82,48 @@ class MemoListener(private val dragView: TextView, private val boardActivity: Bo
                 val left = dragView.left + (x - oldX)
                 val top = dragView.top + (y - oldY)
 
-                // layoutを固定
-                val param = dragView.layoutParams as ViewGroup.MarginLayoutParams
-                param.setMargins(left, top, 0, 0)
-                dragView.layoutParams = param
-
-                // Realmに位置を保存
                 val memo = realm.where<Memo>().equalTo("id", dragView.id).findFirst()
-                realm.executeTransaction {
-                    memo?.left = left
-                    memo?.top = top
 
+                if (changeMemoSizeFlag) {
+                    // 大きさ変更
+                    dragView.width += left - dragView.left
+                    dragView.height += top - dragView.top
+
+                    // Realmに大きさを保存
+                    realm.executeTransaction {
+                        memo?.width = dragView.width
+                        memo?.height = dragView.height
+                    }
+
+                    // 大きさ制限
+                    if (dragView.width < defaultWidth) {
+                        dragView.width = defaultWidth
+                        realm.executeTransaction {
+                            memo?.width = defaultWidth
+                        }
+                    }
+                    if (dragView.height < defaultHeight) {
+                        dragView.height = defaultHeight
+                        realm.executeTransaction {
+                            memo?.height = defaultHeight
+                        }
+                    }
+
+
+
+                    changeMemoSizeFlag = false
+
+                } else {
+                    // layoutを固定
+                    val param = dragView.layoutParams as ViewGroup.MarginLayoutParams
+                    param.setMargins(left, top, 0, 0)
+                    dragView.layoutParams = param
+
+                    // Realmに位置を保存
+                    realm.executeTransaction {
+                        memo?.left = left
+                        memo?.top = top
+                    }
                 }
 
                 dragView.alpha = 1.0f

@@ -32,7 +32,8 @@ class BoardActivity : AppCompatActivity() {
     val textSize = 30f
     val color = Color.YELLOW
     val padding = 20
-    val width = 500
+    val width = 400
+    val height = 150
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +83,8 @@ class BoardActivity : AppCompatActivity() {
                 memoView.textSize = textSize
                 memoView.setBackgroundColor(memo.color)
                 memoView.setPadding(padding, padding, padding, padding)
-                memoView.width = width
+                memoView.width = memo.width
+                memoView.height = memo.height
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     memoView.elevation = 40f  // 影エフェクト(API21以上)
                 }
@@ -139,6 +141,8 @@ class BoardActivity : AppCompatActivity() {
             memo.date = Date()
             memo.left = left
             memo.top = top
+            memo.width = width
+            memo.height = height
             //親のboardにmemoを保存
             board?.memos?.add(memo)
 
