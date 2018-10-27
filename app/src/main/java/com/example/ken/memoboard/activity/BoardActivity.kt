@@ -17,6 +17,7 @@ import io.realm.Realm
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_board.*
+import kotlinx.android.synthetic.main.content_board.*
 import java.util.*
 
 
@@ -57,6 +58,11 @@ class BoardActivity : AppCompatActivity() {
             // アクティビティ再開
             recreate()
 
+        }
+
+
+        color_button.setOnClickListener {
+            my_view.colorChange()
         }
 
     }
